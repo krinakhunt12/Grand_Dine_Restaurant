@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { CheckCircle } from "lucide-react"; // Using lucide icons for success feedback
+import { CheckCircle } from "lucide-react"; // icon for success feedback
 
 const ReserveTable = ({ onClose }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    datetime: "",
+    date: "",
+    time: "",
+    persons: "1",
+    priceRange: "Moderate",
   });
   const [submitted, setSubmitted] = useState(false);
 
@@ -16,22 +19,31 @@ const ReserveTable = ({ onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.datetime) {
+    const { name, email, date, time, persons, priceRange } = formData;
+    if (!name || !email || !date || !time || !persons || !priceRange) {
       alert("Please fill in all fields.");
       return;
     }
 
     setSubmitted(true);
 
+    // Simulate API submission delay
     setTimeout(() => {
-      setFormData({ name: "", email: "", datetime: "" });
+      setFormData({
+        name: "",
+        email: "",
+        date: "",
+        time: "",
+        persons: "1",
+        priceRange: "Moderate",
+      });
       setSubmitted(false);
       onClose();
     }, 2500);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm px-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 bg-opacity-60 backdrop-blur-sm px-4">
       <div className="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-2xl relative animate-fadeIn">
         <button
           className="absolute top-4 right-4 text-gray-600 hover:text-black text-2xl"
@@ -86,18 +98,68 @@ const ReserveTable = ({ onClose }) => {
                   />
                 </div>
 
-                <div className="relative">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Date & Time
-                  </label>
-                  <input
-                    name="datetime"
-                    value={formData.datetime}
-                    onChange={handleChange}
-                    type="datetime-local"
-                    className="w-full border border-gray-300 p-3 pl-4 rounded-md focus:ring-2 focus:ring-yellow-400 focus:outline-none transition"
-                  />
-                  <p className="text-xs text-gray-400 mt-1">Please select a date and time for your reservation.</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Date
+                    </label>
+                    <input
+                      name="date"
+                      value={formData.date}
+                      onChange={handleChange}
+                      type="date"
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-yellow-400 focus:outline-none transition"
+                    />
+                  </div>
+
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Time
+                    </label>
+                    <input
+                      name="time"
+                      value={formData.time}
+                      onChange={handleChange}
+                      type="time"
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-yellow-400 focus:outline-none transition"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Number of Persons
+                    </label>
+                    <select
+                      name="persons"
+                      value={formData.persons}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-yellow-400 focus:outline-none transition"
+                    >
+                      {[...Array(10).keys()].map((i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {i + 1} {i + 1 === 1 ? "person" : "persons"}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Price Range
+                    </label>
+                    <select
+                      name="priceRange"
+                      value={formData.priceRange}
+                      onChange={handleChange}
+                      className="w-full border border-gray-300 p-3 rounded-md focus:ring-2 focus:ring-yellow-400 focus:outline-none transition"
+                    >
+                      <option value="Budget">Budget</option>
+                      <option value="Moderate">Moderate</option>
+                      <option value="Premium">Premium</option>
+                    </select>
+                  </div>
                 </div>
 
                 <button

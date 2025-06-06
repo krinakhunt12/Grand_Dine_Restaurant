@@ -1,28 +1,31 @@
+// src/components/Navbar.jsx
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const menuItems = ["Home", "About", "Menu", "Events", "Gallery", "Contact"];
+  const menuItems = [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Menu", path: "/menu" },
+    { name: "Events", path: "/events" },
+    { name: "Gallery", path: "/gallery" },
+    { name: "Contact", path: "/contact" },
+  ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const handleNavClick = () => {
-    setMobileMenuOpen(false);
-  };
 
   return (
     <header
       className={`fixed w-full z-50 transition-colors duration-300 ${
         scrolled
-          ? "bg-yellow-400 bg-opacity-90 backdrop-blur-sm"
-          : "bg-black bg-opacity-70"
+          ? "bg-black bg-opacity-50 backdrop-blur-sm"
+          : " bg-opacity-70"
       }`}
     >
       <div className="container mx-auto flex justify-between items-center px-6 py-4">
@@ -30,29 +33,30 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex items-center space-x-6 text-sm text-white">
-          {menuItems.map((item) => (
-            <a
-              href={`#${item.toLowerCase()}`}
-              key={item}
+          {menuItems.map(({ name, path }) => (
+            <Link
+              key={name}
+              to={path}
               className="hover:text-yellow-400 transition font-medium"
+              onClick={() => setMobileMenuOpen(false)}
             >
-              {item}
-            </a>
+              {name}
+            </Link>
           ))}
 
           {/* Buttons */}
-          <button
-            type="button"
+          <Link
+            to="/login"
             className="ml-4 px-4 py-1 border border-white rounded text-white font-medium hover:bg-white hover:text-black transition"
           >
             Login
-          </button>
-          <button
-            type="button"
+          </Link>
+          <Link
+            to="/signup"
             className="ml-2 px-4 py-1 bg-white rounded text-black font-medium hover:bg-gray-200 transition"
           >
             Signup
-          </button>
+          </Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -88,34 +92,36 @@ const Navbar = () => {
         }`}
       >
         <ul className="flex flex-col items-center space-y-6 py-6 text-lg font-semibold">
-          {menuItems.map((item) => (
-            <li key={item}>
-              <a
-                href={`#${item.toLowerCase()}`}
-                onClick={handleNavClick}
+          {menuItems.map(({ name, path }) => (
+            <li key={name}>
+              <Link
+                to={path}
+                onClick={() => setMobileMenuOpen(false)}
                 className="hover:text-yellow-600 transition"
               >
-                {item}
-              </a>
+                {name}
+              </Link>
             </li>
           ))}
 
           {/* Mobile Buttons */}
           <li>
-            <button
-              onClick={handleNavClick}
-              className="w-32 px-4 py-2 border border-black rounded text-black font-medium hover:bg-gray-200 transition"
+            <Link
+              to="/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-32 px-4 py-2 border border-black rounded text-black font-medium hover:bg-gray-200 transition block text-center"
             >
               Login
-            </button>
+            </Link>
           </li>
           <li>
-            <button
-              onClick={handleNavClick}
-              className="w-32 px-4 py-2 bg-black rounded text-white font-medium hover:bg-gray-800 transition"
+            <Link
+              to="/signup"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-32 px-4 py-2 bg-black rounded text-white font-medium hover:bg-gray-800 transition block text-center"
             >
               Signup
-            </button>
+            </Link>
           </li>
         </ul>
       </nav>

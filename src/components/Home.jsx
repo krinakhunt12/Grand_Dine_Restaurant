@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import "../index.css"; // Tailwind styles + other globals
-import Navbar from "./Navbar";
+import "../index.css"; // Tailwind + globals
 import Footer from "./Footer";
 import ReserveTable from "./ReserveTable";
+
 const Home = () => {
-    const [showReservation, setShowReservation] = useState(false);
+  const [showReservation, setShowReservation] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     AOS.init({ duration: 1000, once: true });
 
-    // Smooth scroll for anchor links
+    // Smooth scroll for anchor links (optional)
     const smoothScroll = (event) => {
       if (event.target.hash) {
         event.preventDefault();
@@ -31,7 +33,6 @@ const Home = () => {
 
   return (
     <div className="font-sans bg-white text-gray-800 overflow-x-hidden">
-      <Navbar />
 
       {/* Hero Section */}
       <section
@@ -53,8 +54,7 @@ const Home = () => {
             Luxury. Taste. Elegance.
           </p>
           <button
-           onClick={() => setShowReservation(true)}
-            href="#reserve"
+            onClick={() => setShowReservation(true)}
             className="mt-8 inline-block px-8 py-4 bg-yellow-400 text-black font-semibold rounded-full hover:bg-yellow-500 transition shadow-lg"
           >
             Reserve Now
@@ -128,17 +128,20 @@ const Home = () => {
               {
                 name: "Truffle Pasta",
                 desc: "Creamy, aromatic, and unforgettable.",
-                image: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?auto=format&fit=crop&w=600&q=80"
+                image:
+                  "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?auto=format&fit=crop&w=600&q=80",
               },
               {
                 name: "Butter Chicken",
                 desc: "Rich, tender and deeply spiced.",
-                image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=600&q=80"
+                image:
+                  "https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=600&q=80",
               },
               {
                 name: "Chocolate Lava Cake",
                 desc: "Warm, gooey, and irresistible.",
-                image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80"
+                image:
+                  "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80",
               },
             ].map((item) => (
               <div
@@ -191,12 +194,12 @@ const Home = () => {
                 Our signature creation changes with the seasons, ensuring a
                 unique and fresh experience with every visit.
               </p>
-              <a
-                href="#reserve"
+              <button
+                onClick={() => setShowReservation(true)}
                 className="inline-block px-8 py-3 bg-yellow-400 text-black font-semibold rounded-full hover:bg-yellow-500 transition shadow-lg"
               >
                 Book Chef's Table
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -240,10 +243,11 @@ const Home = () => {
         data-aos="fade-in"
         aria-label="Reservation"
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1559329007-40df8a9345d8?auto=format&fit=crop&w=1200&q=80')",
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1559329007-40df8a9345d8?auto=format&fit=crop&w=1200&q=80')",
           backgroundPosition: "center",
           backgroundSize: "cover",
-          backgroundBlendMode: "overlay"
+          backgroundBlendMode: "overlay",
         }}
       >
         <div className="relative z-10 bg-white bg-opacity-90 rounded-2xl p-12 max-w-2xl mx-auto">
@@ -254,21 +258,20 @@ const Home = () => {
             Plan your next luxury experience with us. Reserve your table for an
             unforgettable dining journey.
           </p>
-          <a
-            href="#"
+          <button
+            onClick={() => setShowReservation(true)}
             className="px-10 py-3 bg-yellow-500 text-white font-semibold rounded-full hover:bg-yellow-600 transition shadow-lg"
           >
             Make a Reservation
-          </a>
+          </button>
         </div>
       </section>
 
       <Footer />
-      
+
       {showReservation && (
         <ReserveTable onClose={() => setShowReservation(false)} />
       )}
-
     </div>
   );
 };
