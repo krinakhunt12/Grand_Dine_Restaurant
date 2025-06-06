@@ -1,10 +1,11 @@
-// src/components/Navbar.jsx
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+
   const menuItems = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
@@ -15,17 +16,25 @@ const Navbar = () => {
   ];
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    // Only apply scroll listener on Home page
+    if (location.pathname === "/") {
+      const handleScroll = () => setScrolled(window.scrollY > 50);
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    } else {
+      // For other pages, reset scrolled state (optional)
+      setScrolled(false);
+    }
+  }, [location.pathname]);
 
   return (
     <header
       className={`fixed w-full z-50 transition-colors duration-300 ${
-        scrolled
-          ? "bg-black bg-opacity-50 backdrop-blur-sm"
-          : " bg-opacity-70"
+        location.pathname === "/"
+          ? scrolled
+            ? "bg-black bg-opacity-50 backdrop-blur-sm"
+            : "bg-opacity-70"
+          : "bg-black bg-opacity-80" // default style on other pages
       }`}
     >
       <div className="container mx-auto flex justify-between items-center px-6 py-4">

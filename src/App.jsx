@@ -8,8 +8,6 @@ import './App.css';
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
-    
         <AppRoutes />
 
     </BrowserRouter>
